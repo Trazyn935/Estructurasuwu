@@ -36,7 +36,7 @@ public class Spotify1 {
                 System.out.println("Duracion:");
                 playlist[i][j].duracion = scaner.nextInt();
                 
-                scaner.nextLine(); // Limpiar buffer
+                scaner.nextLine(); 
                 System.out.println("=====================================");
             }
         }
@@ -72,7 +72,7 @@ public class Spotify1 {
     
     public static void imprimirPlaylist(Cancion[] lista) {
         for(int i=0; i<lista.length; i++) {
-            // Corrección de sintaxis en el println
+           
             System.out.println((i+1) + ". Titulo:" + lista[i].titulo + 
                                " | Genero:" + lista[i].genero + 
                                " | Vistas:" + lista[i].vistas + 
