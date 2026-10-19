@@ -12,17 +12,17 @@ import java.util.Random;
  */
 public class PaladinGoliath extends Heroe {
 
-    String nombre;
+    /*String nombre;
     int hpMaximo;
-    int hpActual;
+    int hpActual;*/
     int claseArmadura;
     int bonificadorAtaque;
     int bonificadorFuerza;
     int espaciosConjuro;
     boolean escudoDeFeActivo;
     Random dado;
-    int filaActual;
-    int columnaActual;
+    //int filaActual;
+    //int columnaActual;
 
     public PaladinGoliath() {
         this.nombre = "Noel Dandelion";
@@ -30,7 +30,7 @@ public class PaladinGoliath extends Heroe {
         this.hpActual = 50;
         this.claseArmadura = 18; 
         this.bonificadorFuerza = 4;
-        this.bonificadorAtaque = 3; 
+        this.bonificadorAtaque = 7; 
         this.espaciosConjuro = 3;
         this.escudoDeFeActivo = false;
         this.dado = new Random();
@@ -38,6 +38,7 @@ public class PaladinGoliath extends Heroe {
         this.columnaActual = 0;
     }
 
+    @Override
     public void mover(int nuevaFila, int nuevaColumna) {
         this.filaActual = nuevaFila;
         this.columnaActual = nuevaColumna;
@@ -66,6 +67,7 @@ public class PaladinGoliath extends Heroe {
         }
     }
 
+    @Override
     public void recibirDano(int danoEntrante) {
         int reduccionGoliath = dado.nextInt(12) + 1 + 3; 
         int danoFinal = danoEntrante - reduccionGoliath;
