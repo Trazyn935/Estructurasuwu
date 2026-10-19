@@ -1,0 +1,115 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.dndbarriles;
+
+import java.util.Random;
+
+/**
+ *
+ * @author fravi
+ */
+public class PaladinGoliath {
+
+    String nombre;
+    int hpMaximo;
+    int hpActual;
+    int claseArmadura;
+    int bonificadorAtaque;
+    int bonificadorFuerza;
+    int espaciosConjuro;
+    boolean escudoDeFeActivo;
+    Random dado;
+    int filaActual;
+    int columnaActual;
+
+    public PaladinGoliath() {
+        this.nombre = "Noel Dandelion";
+        this.hpMaximo = 50; 
+        this.hpActual = 50;
+        this.claseArmadura = 18; 
+        this.bonificadorFuerza = 4;
+        this.bonificadorAtaque = 3; 
+        this.espaciosConjuro = 3;
+        this.escudoDeFeActivo = false;
+        this.dado = new Random();
+        this.filaActual = 0;
+        this.columnaActual = 0;
+    }
+
+    public void mover(int nuevaFila, int nuevaColumna) {
+        this.filaActual = nuevaFila;
+        this.columnaActual = nuevaColumna;
+        System.out.println("\n" + this.nombre + " avanza hacia las coordenadas [" + this.filaActual + "][" + this.columnaActual + "] del mapa.");
+    }
+
+    public int tirarIniciativa() {
+        return dado.nextInt(20) + 1;
+    }
+
+    public void atacarConMandoble(String nombreObjetivo, int acObjetivo) {
+        int tiradaD20 = dado.nextInt(20) + 1;
+        int totalAtaque = tiradaD20 + bonificadorAtaque;
+
+        System.out.println("\n" + this.nombre + " ataca a " + nombreObjetivo + " con su Mandoble Cornirrojo.");
+        System.out.println("Tirada de ataque: " + tiradaD20 + " + " + bonificadorAtaque + " = " + totalAtaque);
+
+        if (tiradaD20 == 20) {
+            int danoCritico = (dado.nextInt(6) + 1) + (dado.nextInt(6) + 1) + (dado.nextInt(6) + 1) + (dado.nextInt(6) + 1) + bonificadorFuerza;
+            System.out.println("¡GOLPE CRÍTICO! " + nombreObjetivo + " recibe " + danoCritico + " de daño cortante.");
+        } else if (totalAtaque >= acObjetivo) {
+            int dano = (dado.nextInt(6) + 1) + (dado.nextInt(6) + 1) + bonificadorFuerza;
+            System.out.println("¡Impacto! " + nombreObjetivo + " recibe " + dano + " de daño cortante.");
+        } else {
+            System.out.println("El ataque falló contra la armadura de " + nombreObjetivo + ".");
+        }
+    }
+
+    public void recibirDano(int danoEntrante) {
+        int reduccionGoliath = dado.nextInt(12) + 1 + 3; 
+        int danoFinal = danoEntrante - reduccionGoliath;
+        
+        if (danoFinal < 0) {
+            danoFinal = 0;
+        }
+
+        this.hpActual -= danoFinal;
+        System.out.println("\n" + this.nombre + " recibe un golpe de " + danoEntrante + " de daño.");
+        System.out.println("Usa su rasgo Goliath 'Aguante de Piedra' y reduce el daño en " + reduccionGoliath + ".");
+        System.out.println("Daño final recibido: " + danoFinal + ". HP restante: " + this.hpActual + "/" + this.hpMaximo);
+    }
+
+    public void conjurarEscudoDeFe() {
+        if (espaciosConjuro > 0 && !escudoDeFeActivo) {
+            this.claseArmadura += 2;
+            this.espaciosConjuro--;
+            this.escudoDeFeActivo = true;
+            System.out.println("\n" + this.nombre + " conjura Escudo de Fe.");
+            System.out.println("Su Clase de Armadura aumenta a " + this.claseArmadura + ".");
+            System.out.println("Espacios de conjuro restantes: " + this.espaciosConjuro);
+        } else if (escudoDeFeActivo) {
+            System.out.println("\nEl Escudo de Fe ya está activo.");
+        } else {
+            System.out.println("\n" + this.nombre + " no tiene suficientes espacios de conjuro para Escudo de Fe.");
+        }
+    }
+
+    public void conjurarCurarHeridas() {
+        if (espaciosConjuro > 0) {
+            int curacion = dado.nextInt(8) + 1 + 3; 
+            this.hpActual += curacion;
+            
+            if (this.hpActual > this.hpMaximo) {
+                this.hpActual = this.hpMaximo;
+            }
+            
+            this.espaciosConjuro--;
+            System.out.println("\n" + this.nombre + " canaliza luz divina y conjura Curar Heridas.");
+            System.out.println("Recupera " + curacion + " HP. HP actual: " + this.hpActual + "/" + this.hpMaximo);
+            System.out.println("Espacios de conjuro restantes: " + this.espaciosConjuro);
+        } else {
+            System.out.println("\n" + this.nombre + " no tiene suficientes espacios de conjuro para Curar Heridas.");
+        }
+    }
+}
