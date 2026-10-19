@@ -1,9 +1,12 @@
 package com.mycompany.dndbarriles;
 
+import java.util.Scanner;
+
 public abstract class Heroe {
     public String nombre;
     public int hpMaximo;
     public int hpActual;
+    public int claseArmadura;
     public int filaActual;
     public int columnaActual;
 
@@ -17,4 +20,6 @@ public abstract class Heroe {
         this.filaActual = nuevaFila;
         this.columnaActual = nuevaColumna;
     }
+
+    public abstract void ejecutarTurnoCombate(Guardia enemigo, Scanner scanner);
 }
