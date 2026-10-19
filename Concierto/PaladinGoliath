@@ -44,7 +44,24 @@ public class PaladinGoliath extends Heroe {
         this.columnaActual = nuevaColumna;
         System.out.println("\n" + this.nombre + " avanza hacia las coordenadas [" + this.filaActual + "][" + this.columnaActual + "] del mapa.");
     }
+@Override
+public void ejecutarTurnoCombate(Guardia enemigo, Scanner scanner) {
+    System.out.println("\n--- TURNO DE " + this.nombre.toUpperCase() + " ---");
+    System.out.println("1. Atacar con Mandoble Cornirrojo");
+    System.out.println("2. Conjurar Escudo de Fe");
+    System.out.println("3. Conjurar Curar Heridas");
+    int opc = scanner.nextInt();
 
+    if (opc == 1) {
+        atacarConMandoble(enemigo.nombre, enemigo.claseArmadura);
+    } else if (opc == 2) {
+        conjurarEscudoDeFe();
+    } else if (opc == 3) {
+        conjurarCurarHeridas();
+    } else {
+        atacarConMandoble(enemigo.nombre, enemigo.claseArmadura);
+    }
+}
     public int tirarIniciativa() {
         return dado.nextInt(20) + 1;
     }
