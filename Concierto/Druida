@@ -10,19 +10,14 @@ import java.util.Random;
  *
  * @author fravi
  */
-public class Druida extends Heroe{
+public class Druida extends Heroe {
 
-    String nombre;
-    int hpMaximo;
-    int hpActual;
     int claseArmadura;
     int bonificadorDestreza;
     int bonificadorSabiduria;
     int bonificadorAtaque;
     int espaciosConjuro;
     Random dado;
-    int filaActual;
-    int columnaActual;
 
     public Druida() {
         this.nombre = "Demet In Vraan";
@@ -31,13 +26,14 @@ public class Druida extends Heroe{
         this.claseArmadura = 15; 
         this.bonificadorDestreza = 4; 
         this.bonificadorSabiduria = 4; 
-        this.bonificadorAtaque = 6; // Competencia (+2) + Destreza (+4)
-        this.espaciosConjuro = 2; // Nivel 1
+        this.bonificadorAtaque = 6; 
+        this.espaciosConjuro = 2; 
         this.dado = new Random();
         this.filaActual = 0;
         this.columnaActual = 0;
     }
 
+    @Override
     public void mover(int nuevaFila, int nuevaColumna) {
         this.filaActual = nuevaFila;
         this.columnaActual = nuevaColumna;
@@ -84,15 +80,6 @@ public class Druida extends Heroe{
         }
     }
 
-    public void recibirDano(int danoEntrante) {
-        this.hpActual -= danoEntrante;
-        if (this.hpActual < 0) {
-            this.hpActual = 0;
-        }
-        System.out.println("\n" + this.nombre + " recibe un golpe de " + danoEntrante + " de daño.");
-        System.out.println("HP restante: " + this.hpActual + "/" + this.hpMaximo);
-    }
-    
     public void conjurarPalabraCurativa() {
         if (espaciosConjuro > 0) {
             int curacion = dado.nextInt(4) + 1 + bonificadorSabiduria; 
