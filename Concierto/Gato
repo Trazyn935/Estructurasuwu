@@ -5,6 +5,7 @@
 package com.mycompany.dndbarriles;
 
 import java.util.Random;
+import java.util.Scanner; // <-- Agregada importación
 
 /**
  *
@@ -43,25 +44,36 @@ public class Gato extends Heroe {
         System.out.println("\n" + this.nombre + " da un salto sigiloso hacia las coordenadas [" + this.filaActual + "][" + this.columnaActual + "] del mapa.");
     }
 
+    @Override
+    public void ejecutarTurnoCombate(Guardia enemigo, Scanner scanner) {
+        System.out.println("\n--- TURNO DE " + this.nombre.toUpperCase() + " ---");
+        System.out.println("1. Atacar con Daga");
+        int opc = scanner.nextInt();
+        
+        atacarConDaga(enemigo);
+    }
+
     public int tirarIniciativa() {
         return dado.nextInt(20) + 1 + bonificadorDestreza;
     }
 
-    public void atacarConDaga(String objetivo, int acObjetivo) {
+    public void atacarConDaga(Guardia enemigo) {
         int tiradaD20 = dado.nextInt(20) + 1;
         int totalAtaque = tiradaD20 + bonificadorAtaque;
 
-        System.out.println("\n" + this.nombre + " salta ágilmente e intenta apuñalar a " + objetivo + " con su daga.");
+        System.out.println("\n" + this.nombre + " salta ágilmente e intenta apuñalar a " + enemigo.nombre + " con su daga.");
         System.out.println("Tirada de ataque: " + tiradaD20 + " + " + bonificadorAtaque + " = " + totalAtaque);
 
         if (tiradaD20 == 20) {
             int danoCritico = (dado.nextInt(4) + 1) + (dado.nextInt(4) + 1) + bonificadorDestreza;
-            System.out.println("¡ZARPAZO LETAL CRÍTICO! " + objetivo + " recibe " + danoCritico + " de daño perforante.");
-        } else if (totalAtaque >= acObjetivo) {
+            System.out.print("¡ZARPAZO LETAL CRÍTICO!");
+            enemigo.recibirDano(danoCritico);
+        } else if (totalAtaque >= enemigo.claseArmadura) {
             int dano = dado.nextInt(4) + 1 + bonificadorDestreza;
-            System.out.println("¡Impacto! " + objetivo + " recibe " + dano + " de daño perforante.");
+            System.out.print("¡Impacto!");
+            enemigo.recibirDano(dano);
         } else {
-            System.out.println("El ataque fue demasiado predecible y el objetivo lo esquivó.");
+            System.out.println("El ataque fue demasiado predecible y " + enemigo.nombre + " lo esquivó.");
         }
     }
 }
