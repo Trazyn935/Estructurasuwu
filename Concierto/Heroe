@@ -1,0 +1,20 @@
+package com.mycompany.dndbarriles;
+
+public abstract class Heroe {
+    public String nombre;
+    public int hpMaximo;
+    public int hpActual;
+    public int filaActual;
+    public int columnaActual;
+
+    public void recibirDano(int dano) {
+        this.hpActual -= dano;
+        if (this.hpActual < 0) this.hpActual = 0;
+        System.out.println(">>> " + this.nombre + " recibe " + dano + " de daño. (HP: " + this.hpActual + "/" + this.hpMaximo + ")");
+    }
+
+    public void mover(int nuevaFila, int nuevaColumna) {
+        this.filaActual = nuevaFila;
+        this.columnaActual = nuevaColumna;
+    }
+}
