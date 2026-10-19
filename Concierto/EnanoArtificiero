@@ -5,6 +5,7 @@
 package com.mycompany.dndbarriles;
 
 import java.util.Random;
+import java.util.Scanner; // <-- Agregada importación
 
 /**
  *
@@ -49,73 +50,91 @@ public class EnanoArtificiero extends Heroe {
         System.out.println("\n" + this.nombre + " avanza hacia las coordenadas [" + this.filaActual + "][" + this.columnaActual + "] del mapa.");
     }
 
+    @Override
+    public void ejecutarTurnoCombate(Guardia enemigo, Scanner scanner) {
+        System.out.println("\n--- TURNO DE " + this.nombre.toUpperCase() + " ---");
+        System.out.println("1. Atacar con Martillo de Guerra");
+        System.out.println("2. Disparar Cañón Largo");
+        System.out.println("3. Disparar Bala Especial");
+        System.out.println("4. Conjurar Sanar");
+        int opc = scanner.nextInt();
+
+        if (opc == 1) {
+            atacarConMartillo(enemigo);
+        } else if (opc == 2) {
+            dispararCanon(enemigo);
+        } else if (opc == 3) {
+            dispararBalaEspecial(enemigo);
+        } else if (opc == 4) {
+            conjurarSanar();
+        } else {
+            atacarConMartillo(enemigo);
+        }
+    }
+
     public int tirarIniciativa() {
         return dado.nextInt(20) + 1 + bonificadorDestreza;
     }
 
-    public void atacarConMartillo(String nombreObjetivo, int acObjetivo) {
+    public void atacarConMartillo(Guardia enemigo) {
         int tiradaD20 = dado.nextInt(20) + 1;
         int totalAtaque = tiradaD20 + bonificadorAtaqueCuerpoACuerpo;
 
-        System.out.println("\n" + this.nombre + " ataca a " + nombreObjetivo + " con su Martillo de guerra.");
+        System.out.println("\n" + this.nombre + " ataca a " + enemigo.nombre + " con su Martillo de guerra.");
         System.out.println("Tirada de ataque: " + tiradaD20 + " + " + bonificadorAtaqueCuerpoACuerpo + " = " + totalAtaque);
 
         if (tiradaD20 == 20) {
             int danoCritico = (dado.nextInt(10) + 1) + (dado.nextInt(10) + 1) + bonificadorFuerza + 1;
-            System.out.println("¡GOLPE CRÍTICO! " + nombreObjetivo + " recibe " + danoCritico + " de daño contundente.");
-        } else if (totalAtaque >= acObjetivo) {
+            System.out.print("¡GOLPE CRÍTICO!");
+            enemigo.recibirDano(danoCritico);
+        } else if (totalAtaque >= enemigo.claseArmadura) {
             int dano = (dado.nextInt(10) + 1) + bonificadorFuerza + 1;
-            System.out.println("¡Impacto! " + nombreObjetivo + " recibe " + dano + " de daño contundente.");
+            System.out.print("¡Impacto!");
+            enemigo.recibirDano(dano);
         } else {
-            System.out.println("El ataque falló contra la armadura de " + nombreObjetivo + ".");
+            System.out.println("El ataque falló contra la armadura de " + enemigo.nombre + ".");
         }
     }
 
-    public void dispararCanon(String nombreObjetivo, int acObjetivo) {
+    public void dispararCanon(Guardia enemigo) {
         int tiradaD20 = dado.nextInt(20) + 1;
         int totalAtaque = tiradaD20 + bonificadorAtaqueDistancia;
 
-        System.out.println("\n" + this.nombre + " dispara a " + nombreObjetivo + " con su Cañón largo.");
+        System.out.println("\n" + this.nombre + " dispara a " + enemigo.nombre + " con su Cañón largo.");
         System.out.println("Tirada de ataque: " + tiradaD20 + " + " + bonificadorAtaqueDistancia + " = " + totalAtaque);
 
         if (tiradaD20 == 20) {
             int danoCritico = (dado.nextInt(12) + 1) + (dado.nextInt(12) + 1) + bonificadorDestreza + 1;
-            System.out.println("¡GOLPE CRÍTICO! " + nombreObjetivo + " recibe " + danoCritico + " de daño perforante.");
-        } else if (totalAtaque >= acObjetivo) {
+            System.out.print("¡GOLPE CRÍTICO!");
+            enemigo.recibirDano(danoCritico);
+        } else if (totalAtaque >= enemigo.claseArmadura) {
             int dano = (dado.nextInt(12) + 1) + bonificadorDestreza + 1;
-            System.out.println("¡Impacto! " + nombreObjetivo + " recibe " + dano + " de daño perforante.");
+            System.out.print("¡Impacto!");
+            enemigo.recibirDano(dano);
         } else {
-            System.out.println("El disparo rebotó en la armadura de " + nombreObjetivo + ".");
+            System.out.println("El disparo rebotó en la armadura de " + enemigo.nombre + ".");
         }
     }
 
-    public void dispararBalaEspecial(String nombreObjetivo, int acObjetivo) {
+    public void dispararBalaEspecial(Guardia enemigo) {
         int bonificadorAtaqueMagico = bonificadorInteligencia + 2; 
         int tiradaD20 = dado.nextInt(20) + 1;
         int totalAtaque = tiradaD20 + bonificadorAtaqueMagico;
 
-        System.out.println("\n" + this.nombre + " usa su Ataque Especial (Bala Especial) contra " + nombreObjetivo + ".");
+        System.out.println("\n" + this.nombre + " usa su Ataque Especial (Bala Especial) contra " + enemigo.nombre + ".");
         System.out.println("Tirada de ataque: " + tiradaD20 + " + " + bonificadorAtaqueMagico + " = " + totalAtaque);
 
         if (tiradaD20 == 20) {
             int danoCritico = (dado.nextInt(12) + 1) + (dado.nextInt(12) + 1) + bonificadorInteligencia + 2;
-            System.out.println("¡GOLPE CRÍTICO MAGISTRAL! " + nombreObjetivo + " recibe " + danoCritico + " de daño perforante.");
-        } else if (totalAtaque >= acObjetivo) {
+            System.out.print("¡GOLPE CRÍTICO MAGISTRAL!");
+            enemigo.recibirDano(danoCritico);
+        } else if (totalAtaque >= enemigo.claseArmadura) {
             int dano = (dado.nextInt(12) + 1) + bonificadorInteligencia + 2;
-            System.out.println("¡Impacto! " + nombreObjetivo + " recibe " + dano + " de daño perforante.");
+            System.out.print("¡Impacto!");
+            enemigo.recibirDano(dano);
         } else {
-            System.out.println("La bala especial no logró penetrar la defensa de " + nombreObjetivo + ".");
+            System.out.println("La bala especial no logró penetrar la defensa de " + enemigo.nombre + ".");
         }
-    }
-
-    @Override
-    public void recibirDano(int danoEntrante) {
-        this.hpActual -= danoEntrante;
-        if (this.hpActual < 0) {
-            this.hpActual = 0;
-        }
-        System.out.println("\n" + this.nombre + " recibe un golpe de " + danoEntrante + " de daño.");
-        System.out.println("HP restante: " + this.hpActual + "/" + this.hpMaximo);
     }
 
     public void conjurarSanar() {
