@@ -12,9 +12,9 @@ import java.util.Random;
  */
 public class EnanoArtificiero extends Heroe {
 
-    String nombre;
+    /*String nombre;
     int hpMaximo;
-    int hpActual;
+    int hpActual;*/
     int claseArmadura;
     int bonificadorFuerza;
     int bonificadorDestreza;
@@ -23,8 +23,8 @@ public class EnanoArtificiero extends Heroe {
     int bonificadorAtaqueDistancia;
     int espaciosConjuro;
     Random dado;
-    int filaActual;
-    int columnaActual;
+    //int filaActual;
+    //int columnaActual;
 
     public EnanoArtificiero() {
         this.nombre = "Knull Boca de Dragón";
@@ -42,6 +42,7 @@ public class EnanoArtificiero extends Heroe {
         this.columnaActual = 0;
     }
 
+    @Override
     public void mover(int nuevaFila, int nuevaColumna) {
         this.filaActual = nuevaFila;
         this.columnaActual = nuevaColumna;
@@ -107,6 +108,7 @@ public class EnanoArtificiero extends Heroe {
         }
     }
 
+    @Override
     public void recibirDano(int danoEntrante) {
         this.hpActual -= danoEntrante;
         if (this.hpActual < 0) {
