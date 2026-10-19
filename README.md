@@ -1,20 +1,20 @@
 # Estructurasuwu
 para la partida dndbarriles
-# 🐉 DnD: La Comunidad del Barril en Busca de la Caguama Suprema 🍻
+#  DnD: La Comunidad del Barril en Busca de la Caguama Suprema 
 
 Un juego de rol táctico por turnos para consola . Inspirado una partida que tuve en *Dungeons & Dragons 5e*, y guiado por tiradas de dados virtuales.
 
-## 📖 Sinopsis
+##  Sinopsis
 Mision: robar alcohol del corrupto corrupto gobierno.
 
-## ✨ Características Principales
+##Características Principales
 * **Exploración Táctica (Grid 5x5):** Navegación por celdas bidimensionales manejando colisiones y límites de mapa.
 * **Sistema de Combate D&D 5e:** Mecánicas de Iniciativa, Clase de Armadura (CA), Bonificadores de Ataque y Golpes Críticos (Nat d20).
 * **Narrativa Interactiva:** Eventos dinámicos que cambian según el personaje seleccionado y tiradas de dados ocultas (ej. fuego amigo, decapitaciones épicas o gatos voladores).
 * **Polimorfismo en Acción:** Sistema de clases donde cada personaje ejecuta su propio turno de combate de forma dinámica.
 
 ---
-(resumido por IA, mucho texto)
+(resumido por IA de aqui en adelante, mucho texto)
 ## 🛡️ Clases Jugables
 
 El jugador puede seleccionar entre 4 miembros de la party, todos heredando de la clase abstracta `Heroe`:
