@@ -1,0 +1,183 @@
+package com.mycompany.dndbarriles;
+
+import java.util.Random;
+import java.util.Scanner;
+
+public class Partida {
+
+    Heroe jugador;
+    Scanner scanner;
+    Random dado;
+    String[][] mapaFortaleza;
+
+    public Partida(Heroe jugadorSeleccionado) {
+        this.jugador = jugadorSeleccionado;
+        this.scanner = new Scanner(System.in);
+        this.dado = new Random();
+        this.mapaFortaleza = new String[5][5];
+    }
+
+    public void iniciarHistoria() {
+        System.out.println("\n=======================================================");
+        System.out.println("CAPÍTULO 1: LA INFILTRACIÓN Y EL VINO");
+        System.out.println("=======================================================");
+        System.out.println("La party (Demet la Druida, Knull el Enano y la Gata) se acercan a la entrada principal de la fortaleza.");
+        System.out.println("El guardia de la puerta les marca el alto.");
+        
+        System.out.println("\n¿Qué intentas hacer?");
+        System.out.println("1. Intentar persuadir al guardia de que son mercantes.");
+        System.out.println("2. Que la Gata intente usar su encanto para distraerlo.");
+        int decision = scanner.nextInt();
+
+        if (decision == 2) {
+            System.out.println("\nLa Gata maúlla tiernamente y se frota en las botas del guardia... parece funcionar, pero el guardia nota las armas del Enano.");
+        } else {
+            System.out.println("\nEl guardia no cree ni una sola palabra de su historia.");
+        }
+
+        System.out.println("¡ALERTA! El guardia levanta su lanza. Toda la party entra en pánico y huyen hacia la espesura del bosque.");
+        System.out.println("Se han perdido entre los árboles oscuros...");
+        
+        System.out.println("\nPresiona 1 para buscar un rastro.");
+        scanner.nextInt();
+
+        if (jugador.nombre.contains("Noel")) {
+            System.out.println("\nMientras patrullabas el bosque, escuchas ruido. ¡Es tu party! Se habían perdido sin ti.");
+            System.out.println("Como el experto Paladín del grupo, los guías de vuelta a un punto ciego de la muralla de la fortaleza.");
+        } else {
+            System.out.println("\nEntre los arbustos emerge una figura gigante... ¡Es Noel Dandelion, el Paladín Goliath!");
+            System.out.println("Noel sonríe y los guía de forma segura a un punto ciego de la muralla de la fortaleza.");
+        }
+
+        System.out.println("\nLa muralla es alta. Noel toma a la Gata en sus enormes manos.");
+        System.out.println("Con un impulso perfecto, ¡el Paladín lanza exitosamente a la Gata por encima de la muralla hacia el interior!");
+
+        System.out.println("\nAhora, Noel y Knull necesitan atraer al guardia de la puerta hacia el bosque para noquearlo.");
+        System.out.println("Noel toma una piedra grande para lanzarla como distracción...");
+        
+        int tiradaPiedra = dado.nextInt(20) + 1;
+        if (tiradaPiedra <= 5) {
+            System.out.println("\n¡Pifia! La piedra resbala de las enormes manos del Paladín, rebota en un árbol y golpea directamente en la cabeza a la Druida.");
+            if (jugador.nombre.contains("Demet")) {
+                jugador.recibirDano(2);
+            } else {
+                System.out.println(">>> Demet In Vraan recibe 2 de daño contundente por fuego amigo.");
+            }
+        } else {
+            System.out.println("\nLa piedra cae en un arbusto. El guardia se acerca a investigar, momento en el que el Paladín y el Enano lo noquean limpiamente.");
+        }
+
+        System.out.println("La vía está despejada. La Druida y el Enano se cuelan por la puerta trasera.");
+        System.out.println("El Paladín decide entrar caminando tranquilamente por el patio principal. Al ser tan grande y estar en armadura, los guardias asumen que es de un turno nuevo.");
+        
+        System.out.println("\nEn la cava, el Enano roba un par de barriles de vino... ¡Pero accidentalmente tira uno de cerveza!");
+        System.out.println("El estruendo resuena por toda la fortaleza. ¡Los guardias corren hacia la cava!");
+        
+        iniciarCombateMatriz();
+    }
+
+    private void iniciarCombateMatriz() {
+        System.out.println("\n=======================================================");
+        System.out.println("INICIO DEL COMBATE TÁCTICO");
+        System.out.println("=======================================================");
+
+        for (int f = 0; f < 5; f++) {
+            for (int c = 0; c < 5; c++) {
+                mapaFortaleza[f][c] = "[ Vacio ]";
+            }
+        }
+
+        mapaFortaleza[0][0] = "[Jugador]";
+        mapaFortaleza[0][3] = "[Guardia]";
+        mapaFortaleza[1][2] = "[Guardia]";
+        mapaFortaleza[2][4] = "[Guardia]";
+        mapaFortaleza[3][0] = "[Guardia]";
+        mapaFortaleza[3][3] = "[Guardia]";
+        mapaFortaleza[4][1] = "[Guardia]";
+        mapaFortaleza[4][3] = "[Guardia]"; 
+        
+        boolean juegoActivo = true;
+        int guardiasAsesinados = 0;
+
+        while (juegoActivo && jugador.hpActual > 0) {
+            System.out.println("\n--- CAVA DE LA FORTALEZA (5x5) ---");
+            for (int f = 0; f < 5; f++) {
+                for (int c = 0; c < 5; c++) {
+                    System.out.print(mapaFortaleza[f][c] + " ");
+                }
+                System.out.println();
+            }
+            
+            System.out.println("\nMovimiento (1:Arriba, 2:Abajo, 3:Izq, 4:Der)");
+            int mov = scanner.nextInt();
+            int nFila = jugador.filaActual;
+            int nCol = jugador.columnaActual;
+
+            if (mov == 1) nFila--; else if (mov == 2) nFila++;
+            else if (mov == 3) nCol--; else if (mov == 4) nCol++;
+
+            if (nFila < 0 || nFila > 4 || nCol < 0 || nCol > 4) {
+                System.out.println("Chocas contra un estante de barriles.");
+                continue;
+            }
+
+            String celda = mapaFortaleza[nFila][nCol];
+
+            if (celda.equals("[ Vacio ]")) {
+                mapaFortaleza[jugador.filaActual][jugador.columnaActual] = "[ Vacio ]";
+                jugador.mover(nFila, nCol);
+                mapaFortaleza[jugador.filaActual][jugador.columnaActual] = "[Jugador]";
+                eventosNarrativosAleatorios();
+            } 
+            else if (celda.equals("[Guardia]")) {
+                Guardia enemigo = new Guardia(guardiasAsesinados + 1);
+                System.out.println("\n¡Inicia el duelo contra el " + enemigo.nombre + "!");
+                
+                enemigo.hpActual = 0; // Simulando auto-kill para acelerar la demostración narrativa
+                guardiasAsesinados++;
+                
+                System.out.println("\n" + enemigo.nombre + " ha sido derrotado brutalmente.");
+                mapaFortaleza[jugador.filaActual][jugador.columnaActual] = "[ Vacio ]";
+                jugador.mover(nFila, nCol);
+                mapaFortaleza[jugador.filaActual][jugador.columnaActual] = "[Jugador]";
+
+                if (guardiasAsesinados == 6) {
+                    System.out.println("\n=======================================================");
+                    System.out.println("FIN DEL COMBATE");
+                    System.out.println("Prácticamente la Gata y el Paladín han masacrado a la mayoría de la guardia.");
+                    System.out.println("Solo queda un guardia vivo acorralado contra la pared.");
+                    System.out.println("La party lo ata de las manos.");
+                    System.out.println("¡INTERROGATORIO! Le exigen saber dónde esconden el alcohol de reserva de los oficiales y los tesoros.");
+                    System.out.println("El guardia, aterrorizado por el Paladín gigante y la gata asesina, confiesa todo.");
+                    System.out.println("\nFIN DEL CAPÍTULO.");
+                    juegoActivo = false;
+                }
+            }
+        }
+    }
+
+    private void eventosNarrativosAleatorios() {
+        int evento = dado.nextInt(10);
+        
+        if (evento == 1) {
+            System.out.println("\n[EVENTO CAÓTICO] La Druida dispara su arco largo desde el fondo, pero la flecha rebota ruidosamente en la pesada armadura de Noel...");
+            System.out.println("¡La flecha desviada se clava en la pierna de Knull el Enano!");
+            if (jugador.nombre.contains("Knull")) jugador.recibirDano(3);
+            else System.out.println(">>> Knull recibe 3 de daño por fuego amigo.");
+        } 
+        else if (evento == 2) {
+            System.out.println("\n[EVENTO ÉPICO] Dos guardias intentan emboscar a Knull... ¡Pero Noel el Paladín interviene!");
+            System.out.println("Con un tajo horizontal perfecto de su mandoble, decapita a los dos guardias simultáneamente.");
+        }
+        else if (evento == 3) {
+            System.out.println("\n[FALLO GRACIOSO] Noel intenta un golpe devastador desde arriba. Al ser tan colosal, sus movimientos son amplios.");
+            System.out.println("El guardia simplemente se agacha en pánico y el mandoble de Noel destroza un estante vacío de pared a pared.");
+        }
+        else if (evento == 4) {
+            System.out.println("\n[TÁCTICA IMPROVISADA] ¡Un guardia intenta escapar para dar la alarma!");
+            System.out.println("Sin dudarlo, el Enano agarra a la Gata por la cola y la lanza como un proyectil peludo contra el guardia fugitivo.");
+            System.out.println("La Gata saca su daga en pleno vuelo (Tirada de reacción superada)...");
+            System.out.println("¡Se aferra a la cara del guardia y lo incapacita antes de que cruce la puerta!");
+        }
+    }
+}
