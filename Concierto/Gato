@@ -1,0 +1,31 @@
+package com.mycompany.dndbarriles;
+
+import java.util.Random;
+
+public class Gato extends Heroe {
+    int bonificadorDestreza;
+    int bonificadorCarisma;
+    Random dado;
+
+    public Gato() {
+        this.nombre = "Gata con Botas";
+        this.hpMaximo = 12;
+        this.hpActual = 12;
+        this.bonificadorDestreza = 2;
+        this.bonificadorCarisma = 1;
+        this.dado = new Random();
+        this.filaActual = 0;
+        this.columnaActual = 0;
+    }
+
+    public void atacarConDaga(String objetivo, int acObjetivo) {
+        int tirada = dado.nextInt(20) + 1;
+        System.out.println("\n" + this.nombre + " salta ágilmente e intenta apuñalar a " + objetivo + " con su daga.");
+        if (tirada + bonificadorDestreza >= acObjetivo) {
+            int dano = dado.nextInt(4) + 1 + bonificadorDestreza;
+            System.out.println("¡Zarpazo letal! " + objetivo + " recibe " + dano + " de daño perforante.");
+        } else {
+            System.out.println("El ataque fue demasiado predecible y el objetivo lo esquivó.");
+        }
+    }
+}
