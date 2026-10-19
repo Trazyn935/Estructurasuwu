@@ -1,29 +1,65 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.mycompany.dndbarriles;
 
 import java.util.Random;
 
+/**
+ *
+ * @author fravi
+ */
 public class Gato extends Heroe {
+
+    /*String nombre;
+    int hpMaximo;
+    int hpActual;*/
+    int claseArmadura;
     int bonificadorDestreza;
     int bonificadorCarisma;
+    int bonificadorAtaque;
     Random dado;
+    //int filaActual;
+    //int columnaActual;
 
     public Gato() {
         this.nombre = "Gata con Botas";
         this.hpMaximo = 12;
         this.hpActual = 12;
+        this.claseArmadura = 15; 
         this.bonificadorDestreza = 2;
         this.bonificadorCarisma = 1;
+        this.bonificadorAtaque = 4; // Competencia (+2) + Destreza (+2)
         this.dado = new Random();
         this.filaActual = 0;
         this.columnaActual = 0;
     }
 
+    @Override
+    public void mover(int nuevaFila, int nuevaColumna) {
+        this.filaActual = nuevaFila;
+        this.columnaActual = nuevaColumna;
+        System.out.println("\n" + this.nombre + " da un salto sigiloso hacia las coordenadas [" + this.filaActual + "][" + this.columnaActual + "] del mapa.");
+    }
+
+    public int tirarIniciativa() {
+        return dado.nextInt(20) + 1 + bonificadorDestreza;
+    }
+
     public void atacarConDaga(String objetivo, int acObjetivo) {
-        int tirada = dado.nextInt(20) + 1;
+        int tiradaD20 = dado.nextInt(20) + 1;
+        int totalAtaque = tiradaD20 + bonificadorAtaque;
+
         System.out.println("\n" + this.nombre + " salta ágilmente e intenta apuñalar a " + objetivo + " con su daga.");
-        if (tirada + bonificadorDestreza >= acObjetivo) {
+        System.out.println("Tirada de ataque: " + tiradaD20 + " + " + bonificadorAtaque + " = " + totalAtaque);
+
+        if (tiradaD20 == 20) {
+            int danoCritico = (dado.nextInt(4) + 1) + (dado.nextInt(4) + 1) + bonificadorDestreza;
+            System.out.println("¡ZARPAZO LETAL CRÍTICO! " + objetivo + " recibe " + danoCritico + " de daño perforante.");
+        } else if (totalAtaque >= acObjetivo) {
             int dano = dado.nextInt(4) + 1 + bonificadorDestreza;
-            System.out.println("¡Zarpazo letal! " + objetivo + " recibe " + dano + " de daño perforante.");
+            System.out.println("¡Impacto! " + objetivo + " recibe " + dano + " de daño perforante.");
         } else {
             System.out.println("El ataque fue demasiado predecible y el objetivo lo esquivó.");
         }
