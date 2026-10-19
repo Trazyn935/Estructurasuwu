@@ -1,0 +1,113 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.dndbarriles;
+
+import java.util.Random;
+
+/**
+ *
+ * @author fravi
+ */
+public class Druida {
+
+    String nombre;
+    int hpMaximo;
+    int hpActual;
+    int claseArmadura;
+    int bonificadorDestreza;
+    int bonificadorSabiduria;
+    int bonificadorAtaque;
+    int espaciosConjuro;
+    Random dado;
+    int filaActual;
+    int columnaActual;
+
+    public Druida() {
+        this.nombre = "Demet In Vraan";
+        this.hpMaximo = 10; 
+        this.hpActual = 10;
+        this.claseArmadura = 15; 
+        this.bonificadorDestreza = 4; 
+        this.bonificadorSabiduria = 4; 
+        this.bonificadorAtaque = 6; // Competencia (+2) + Destreza (+4)
+        this.espaciosConjuro = 2; // Nivel 1
+        this.dado = new Random();
+        this.filaActual = 0;
+        this.columnaActual = 0;
+    }
+
+    public void mover(int nuevaFila, int nuevaColumna) {
+        this.filaActual = nuevaFila;
+        this.columnaActual = nuevaColumna;
+        System.out.println("\n" + this.nombre + " avanza sigilosamente hacia las coordenadas [" + this.filaActual + "][" + this.columnaActual + "] del mapa.");
+    }
+
+    public int tirarIniciativa() {
+        return dado.nextInt(20) + 1 + bonificadorDestreza;
+    }
+
+    public void atacarConArcoLargo(String nombreObjetivo, int acObjetivo) {
+        int tiradaD20 = dado.nextInt(20) + 1;
+        int totalAtaque = tiradaD20 + bonificadorAtaque;
+
+        System.out.println("\n" + this.nombre + " tensa su Arco Largo y dispara a " + nombreObjetivo + ".");
+        System.out.println("Tirada de ataque: " + tiradaD20 + " + " + bonificadorAtaque + " = " + totalAtaque);
+
+        if (tiradaD20 == 20) {
+            int danoCritico = (dado.nextInt(8) + 1) + (dado.nextInt(8) + 1) + bonificadorDestreza;
+            System.out.println("¡GOLPE CRÍTICO! La flecha impacta vitalmente. " + nombreObjetivo + " recibe " + danoCritico + " de daño perforante.");
+        } else if (totalAtaque >= acObjetivo) {
+            int dano = (dado.nextInt(8) + 1) + bonificadorDestreza;
+            System.out.println("¡Impacto! La flecha alcanza a " + nombreObjetivo + " y recibe " + dano + " de daño perforante.");
+        } else {
+            System.out.println("La flecha pasa de largo sin hacer daño a " + nombreObjetivo + ".");
+        }
+    }
+
+    public void atacarConDaga(String nombreObjetivo, int acObjetivo) {
+        int tiradaD20 = dado.nextInt(20) + 1;
+        int totalAtaque = tiradaD20 + bonificadorAtaque;
+
+        System.out.println("\n" + this.nombre + " ataca cuerpo a cuerpo a " + nombreObjetivo + " con su Daga.");
+        System.out.println("Tirada de ataque: " + tiradaD20 + " + " + bonificadorAtaque + " = " + totalAtaque);
+
+        if (tiradaD20 == 20) {
+            int danoCritico = (dado.nextInt(4) + 1) + (dado.nextInt(4) + 1) + bonificadorDestreza;
+            System.out.println("¡GOLPE CRÍTICO! " + nombreObjetivo + " recibe " + danoCritico + " de daño perforante.");
+        } else if (totalAtaque >= acObjetivo) {
+            int dano = (dado.nextInt(4) + 1) + bonificadorDestreza;
+            System.out.println("¡Impacto! " + nombreObjetivo + " recibe " + dano + " de daño perforante.");
+        } else {
+            System.out.println("El ataque con la daga es evadido por " + nombreObjetivo + ".");
+        }
+    }
+
+    public void recibirDano(int danoEntrante) {
+        this.hpActual -= danoEntrante;
+        if (this.hpActual < 0) {
+            this.hpActual = 0;
+        }
+        System.out.println("\n" + this.nombre + " recibe un golpe de " + danoEntrante + " de daño.");
+        System.out.println("HP restante: " + this.hpActual + "/" + this.hpMaximo);
+    }
+    
+    public void conjurarPalabraCurativa() {
+        if (espaciosConjuro > 0) {
+            int curacion = dado.nextInt(4) + 1 + bonificadorSabiduria; 
+            this.hpActual += curacion;
+            
+            if (this.hpActual > this.hpMaximo) {
+                this.hpActual = this.hpMaximo;
+            }
+            
+            this.espaciosConjuro--;
+            System.out.println("\n" + this.nombre + " murmura una Palabra Curativa (magia de Druida).");
+            System.out.println("Recupera " + curacion + " HP. HP actual: " + this.hpActual + "/" + this.hpMaximo);
+            System.out.println("Espacios de conjuro restantes: " + this.espaciosConjuro);
+        } else {
+            System.out.println("\n" + this.nombre + " no tiene suficientes espacios de conjuro para sanar.");
+        }
+    }
+}
