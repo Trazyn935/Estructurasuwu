@@ -10,7 +10,7 @@ import java.util.Random;
  *
  * @author fravi
  */
-public class Druida {
+public class Druida extends Heroe{
 
     String nombre;
     int hpMaximo;
@@ -26,8 +26,8 @@ public class Druida {
 
     public Druida() {
         this.nombre = "Demet In Vraan";
-        this.hpMaximo = 10; 
-        this.hpActual = 10;
+        this.hpMaximo = 8; 
+        this.hpActual = 8;
         this.claseArmadura = 15; 
         this.bonificadorDestreza = 4; 
         this.bonificadorSabiduria = 4; 
