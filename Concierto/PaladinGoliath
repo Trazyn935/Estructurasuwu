@@ -5,6 +5,7 @@
 package com.mycompany.dndbarriles;
 
 import java.util.Random;
+import java.util.Scanner; // <-- CORREGIDO 1: Agregada la importación de Scanner
 
 /**
  *
@@ -44,43 +45,47 @@ public class PaladinGoliath extends Heroe {
         this.columnaActual = nuevaColumna;
         System.out.println("\n" + this.nombre + " avanza hacia las coordenadas [" + this.filaActual + "][" + this.columnaActual + "] del mapa.");
     }
-@Override
-public void ejecutarTurnoCombate(Guardia enemigo, Scanner scanner) {
-    System.out.println("\n--- TURNO DE " + this.nombre.toUpperCase() + " ---");
-    System.out.println("1. Atacar con Mandoble Cornirrojo");
-    System.out.println("2. Conjurar Escudo de Fe");
-    System.out.println("3. Conjurar Curar Heridas");
-    int opc = scanner.nextInt();
 
-    if (opc == 1) {
-        atacarConMandoble(enemigo.nombre, enemigo.claseArmadura);
-    } else if (opc == 2) {
-        conjurarEscudoDeFe();
-    } else if (opc == 3) {
-        conjurarCurarHeridas();
-    } else {
-        atacarConMandoble(enemigo.nombre, enemigo.claseArmadura);
+    @Override
+    public void ejecutarTurnoCombate(Guardia enemigo, Scanner scanner) {
+        System.out.println("\n--- TURNO DE " + this.nombre.toUpperCase() + " ---");
+        System.out.println("1. Atacar con Mandoble Cornirrojo");
+        System.out.println("2. Conjurar Escudo de Fe");
+        System.out.println("3. Conjurar Curar Heridas");
+        int opc = scanner.nextInt();
+
+        if (opc == 1) {
+            atacarConMandoble(enemigo);
+        } else if (opc == 2) {
+            conjurarEscudoDeFe();
+        } else if (opc == 3) {
+            conjurarCurarHeridas();
+        } else {
+            atacarConMandoble(enemigo);
+        }
     }
-}
+
     public int tirarIniciativa() {
         return dado.nextInt(20) + 1;
     }
 
-    public void atacarConMandoble(String nombreObjetivo, int acObjetivo) {
+    public void atacarConMandoble(Guardia enemigo) { // <-- CORREGIDO 2: Recibe el objeto Guardia directo
         int tiradaD20 = dado.nextInt(20) + 1;
         int totalAtaque = tiradaD20 + bonificadorAtaque;
 
-        System.out.println("\n" + this.nombre + " ataca a " + nombreObjetivo + " con su Mandoble Cornirrojo.");
+        System.out.println("\n" + this.nombre + " ataca a " + enemigo.nombre + " con su Mandoble Cornirrojo.");
         System.out.println("Tirada de ataque: " + tiradaD20 + " + " + bonificadorAtaque + " = " + totalAtaque);
 
         if (tiradaD20 == 20) {
             int danoCritico = (dado.nextInt(6) + 1) + (dado.nextInt(6) + 1) + (dado.nextInt(6) + 1) + (dado.nextInt(6) + 1) + bonificadorFuerza;
-            System.out.println("¡GOLPE CRÍTICO! " + nombreObjetivo + " recibe " + danoCritico + " de daño cortante.");
-        } else if (totalAtaque >= acObjetivo) {
+            System.out.print("¡GOLPE CRÍTICO!");
+            enemigo.recibirDano(danoCritico); // <-- Aplica el daño al enemigo
+        } else if (totalAtaque >= enemigo.claseArmadura) {
             int dano = (dado.nextInt(6) + 1) + (dado.nextInt(6) + 1) + bonificadorFuerza;
-            System.out.println("¡Impacto! " + nombreObjetivo + " recibe " + dano + " de daño cortante.");
+            System.out.print("¡Impacto!");
+            enemigo.recibirDano(dano); // <-- Aplica el daño al enemigo
         } else {
-            System.out.println("El ataque falló contra la armadura de " + nombreObjetivo + ".");
+            System.out.println("El ataque falló contra la armadura de " + enemigo.nombre + ".");
         }
     }
 
