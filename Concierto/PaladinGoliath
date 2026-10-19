@@ -10,7 +10,7 @@ import java.util.Random;
  *
  * @author fravi
  */
-public class PaladinGoliath {
+public class PaladinGoliath extends Heroe {
 
     String nombre;
     int hpMaximo;
