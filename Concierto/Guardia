@@ -1,0 +1,56 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.dndbarriles;
+
+import java.util.Random;
+
+/**
+ *
+ * @author fravi
+ */
+public class Guardia {
+
+    String nombre;
+    int hpActual;
+    int hpMaximo;
+    int claseArmadura;
+    String arma;
+    String armadura;
+    int bonificadorAtaque;
+    Random dado;
+
+    public Guardia(int numero) {
+        this.nombre = "Guardia " + numero;
+        this.arma = "Lanza";
+        this.armadura = "Camisa de malla y escudo";
+        this.claseArmadura = 16;
+        this.dado = new Random();
+        this.hpMaximo = 11;
+        this.hpActual = 11;
+        this.bonificadorAtaque = 3;
+    }
+
+    public void recibirDano(int dano) {
+        this.hpActual -= dano;
+        if (this.hpActual < 0) {
+            this.hpActual = 0;
+        }
+        System.out.println("\nEl " + this.nombre + " con su " + this.armadura + " recibe " + dano + " de daño. HP restante: " + this.hpActual);
+    }
+
+    public void atacar(PaladinGoliath objetivo) {
+        int tirada = dado.nextInt(20) + 1;
+        int total = tirada + bonificadorAtaque;
+        System.out.println("\n" + this.nombre + " ataca a " + objetivo.nombre + " con su " + this.arma + ".");
+        
+        if (total >= objetivo.claseArmadura) {
+            int dano = dado.nextInt(6) + 1 + 1; 
+            System.out.println("El ataque perfora la defensa. " + objetivo.nombre + " recibe " + dano + " de daño penetrante.");
+            objetivo.recibirDano(dano);
+        } else {
+            System.out.println("El ataque rebota contra la armadura de " + objetivo.nombre + ".");
+        }
+    }
+}
