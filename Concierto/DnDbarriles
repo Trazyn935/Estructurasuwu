@@ -1,144 +1,40 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package com.mycompany.dndbarriles;
 
 import java.util.Scanner;
 
-/**
- *
- * @author fravi
- */
 public class DnDbarriles {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
         System.out.println("==========================================");
-        System.out.println("          BIENVENIDO A DnD: "
-                + "La comunidad del barril en busca de la caguama suprema\n");
-        System.out.println("Escenario: 2do piso de una fortaleza      ");
-        System.out.println("Objetivo: Asesinar al menos 6 guardias y  ");
-        System.out.println("          robar el barril de alcohol.     ");
+        System.out.println("          BIENVENIDO a la campaña de DnD:
+La comunidad del barril en busca de la caguama suprema\n");
         System.out.println("==========================================");
         System.out.println("1. Iniciar Partida");
         System.out.println("2. Salir");
 
-        int opcionMenu = scanner.nextInt();
-
-        if (opcionMenu == 1) {
+        if (scanner.nextInt() == 1) {
             System.out.println("\n--- SELECCIÓN DE PERSONAJE ---");
-            System.out.println("Elije a tu héroe:");
-            System.out.println("1. Druida Pícaro (Armas: Arco y Flechas, Daga)");
-            System.out.println("2. Noelle - Paladín Goliath (Arma: Mandoble)");
-            System.out.println("3. Enano Artificiero (Armas: Rifle, Martillo y Hacha)");
-            System.out.println("4. Gato (Arma: Daga)");
+            System.out.println("1. Druida (Demet In Vraan)");
+            System.out.println("2. Paladín (Noel Dandelion)");
+            System.out.println("3. Enano Artificiero (Knull Boca de Dragón)");
+            System.out.println("4. Gata");
 
-            int opcionPersonaje = scanner.nextInt();
-            PaladinGoliath jugador = new PaladinGoliath();
+            int opc = scanner.nextInt();
+            Heroe jugador = null;
 
-            System.out.println("\n¡Has seleccionado a: " + jugador.nombre + "!");
-            System.out.println("Preparando entorno...");
+            if (opc == 1) jugador = new Druida();
+            else if (opc == 2) jugador = new PaladinGoliath();
+            else if (opc == 3) jugador = new EnanoArtificiero();
+            else if (opc == 4) jugador = new Gato();
+            else jugador = new PaladinGoliath(); // Default
 
-            String[][] mapaFortaleza = new String[5][5];
-
-            for (int fila = 0; fila < 5; fila++) {
-                for (int columna = 0; columna < 5; columna++) {
-                    mapaFortaleza[fila][columna] = "[ Vacio ]";
-                }
-            }
-
-            mapaFortaleza[0][0] = "[Noelle ]";
-            mapaFortaleza[0][3] = "[Guardia]";
-            mapaFortaleza[1][2] = "[Guardia]";
-            mapaFortaleza[2][4] = "[Guardia]";
-            mapaFortaleza[3][0] = "[Guardia]";
-            mapaFortaleza[3][3] = "[Guardia]";
-            mapaFortaleza[4][1] = "[Guardia]";
-            mapaFortaleza[4][3] = "[Guardia]"; 
-            mapaFortaleza[4][4] = "[Barril ]";
-
-            boolean juegoActivo = true;
-            int guardiasAsesinados = 0;
-
-            while (juegoActivo && jugador.hpActual > 0) {
-                System.out.println("\n--- MAPA DEL 2DO PISO ---");
-                for (int fila = 0; fila < 5; fila++) {
-                    for (int columna = 0; columna < 5; columna++) {
-                        System.out.print(mapaFortaleza[fila][columna] + " ");
-                    }
-                    System.out.println();
-                }
-                
-                System.out.println("\nGuardias eliminados: " + guardiasAsesinados + "/6");
-                System.out.println("HP de " + jugador.nombre + ": " + jugador.hpActual + "/" + jugador.hpMaximo);
-                System.out.println("¿Hacia dónde te mueves?");
-                System.out.println("1. Arriba");
-                System.out.println("2. Abajo");
-                System.out.println("3. Izquierda");
-                System.out.println("4. Derecha");
-                
-                int movimiento = scanner.nextInt();
-                int nuevaFila = jugador.filaActual;
-                int nuevaColumna = jugador.columnaActual;
-
-                if (movimiento == 1) nuevaFila--;
-                else if (movimiento == 2) nuevaFila++;
-                else if (movimiento == 3) nuevaColumna--;
-                else if (movimiento == 4) nuevaColumna++;
-                else {
-                    System.out.println("Movimiento inválido.");
-                    continue;
-                }
-
-                if (nuevaFila < 0 || nuevaFila > 4 || nuevaColumna < 0 || nuevaColumna > 4) {
-                    System.out.println("¡Un muro de piedra te bloquea el paso!");
-                    continue;
-                }
-
-                String celdaDestino = mapaFortaleza[nuevaFila][nuevaColumna];
-
-                if (celdaDestino.equals("[ Vacio ]") || celdaDestino.equals("[ Inicio]")) {
-                    mapaFortaleza[jugador.filaActual][jugador.columnaActual] = "[ Vacio ]";
-                    jugador.mover(nuevaFila, nuevaColumna);
-                    mapaFortaleza[jugador.filaActual][jugador.columnaActual] = "[Noelle ]";
-                } 
-                else if (celdaDestino.equals("[Guardia]")) {
-                    System.out.println("\n¡Te han detectado! Un guardia con cota de malla y lanza bloquea el camino.");
-                    Guardia enemigo = new Guardia(guardiasAsesinados + 1);
-                    
-                    while (jugador.hpActual > 0 && enemigo.hpActual > 0) {
-                        jugador.atacarConMandoble(enemigo.nombre, enemigo.claseArmadura);
-                        if (enemigo.hpActual > 0) {
-                            enemigo.atacar(jugador);
-                        } else {
-                            System.out.println("\n¡Has asesinado al " + enemigo.nombre + "!");
-                            guardiasAsesinados++;
-                            mapaFortaleza[jugador.filaActual][jugador.columnaActual] = "[ Vacio ]";
-                            jugador.mover(nuevaFila, nuevaColumna);
-                            mapaFortaleza[jugador.filaActual][jugador.columnaActual] = "[Noelle ]";
-                        }
-                    }
-                } 
-                else if (celdaDestino.equals("[Barril ]")) {
-                    if (guardiasAsesinados >= 6) {
-                        System.out.println("\n¡Misión Cumplida! Has asesinado a suficientes guardias y robado el barril de alcohol.");
-                        juegoActivo = false;
-                    } else {
-                        System.out.println("\nAún hay demasiados guardias alertas. Debes asesinar al menos a 6 antes de robar el barril.");
-                    }
-                }
-            }
-
-            if (jugador.hpActual <= 0) {
-                System.out.println("\nNoelle ha muerto... Game over.");
-            }
+            Partida capitulo1 = new Partida(jugador);
+            capitulo1.iniciarHistoria();
 
         } else {
             System.out.println("Saliendo del juego...");
         }
-
         scanner.close();
     }
 }
