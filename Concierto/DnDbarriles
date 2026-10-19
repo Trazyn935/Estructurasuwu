@@ -7,8 +7,8 @@ public class DnDbarriles {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("==========================================");
-        System.out.println("          BIENVENIDO a la campaña de DnD:
-La comunidad del barril en busca de la caguama suprema\n");
+        System.out.println("          BIENVENIDO a la campaña de DnD:"
+                + "La comunidad del barril en busca de la caguama suprema\n");
         System.out.println("==========================================");
         System.out.println("1. Iniciar Partida");
         System.out.println("2. Salir");
